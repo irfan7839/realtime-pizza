@@ -1,6 +1,10 @@
 import axios from 'axios';
 import session from 'express-session';
 import { Notyf } from 'notyf';
+import {initAdmin} from './admin'
+
+
+
 let addToCart=document.querySelectorAll('.add-to-cart');
 let cartCounter=document.querySelector('#cartCounter')
 
@@ -32,3 +36,14 @@ addToCart.forEach((btn)=>{
     
 })
 })
+
+// Remove alert message after x seconds
+const alertMsg = document.querySelector('#success-alert')
+if(alertMsg){
+    setTimeout(()=>{
+        alertMsg.remove()
+    },2000)
+    
+}
+
+initAdmin();

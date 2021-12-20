@@ -44,6 +44,8 @@ app.use(session({
     
 }))
 
+
+
 //passport config
 const passpotInit=require('./app/config/passport')
 passpotInit(passport)
@@ -52,10 +54,12 @@ app.use(passport.session())
 
 app.use(flash());
 
+
 // global middleware
 app.use((req,res,next)=>{
     res.locals.session = req.session
     res.locals.user=req.user
+    
     //console.log(session)
     next()
 })
