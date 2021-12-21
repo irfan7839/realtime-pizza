@@ -80503,7 +80503,10 @@ function updateStatus(order) {
 updateStatus(order); // Socket
 
 var socket = io();
-Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
+
+if (window.location.pathname.includes('admin')) {
+  Object(_admin__WEBPACK_IMPORTED_MODULE_3__["initAdmin"])(socket);
+}
 
 if (order) {
   socket.emit('join', "order_".concat(order._id)); // order_skdhkfhkfhggk

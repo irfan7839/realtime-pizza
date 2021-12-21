@@ -85,7 +85,9 @@ updateStatus(order);
 
 // Socket
 let socket=io()
+if(window.location.pathname.includes('admin')){
 initAdmin(socket);
+}
 if(order){
 socket.emit('join',`order_${order._id}`)
 // order_skdhkfhkfhggk
