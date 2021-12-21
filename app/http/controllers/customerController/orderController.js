@@ -16,9 +16,16 @@ function orderController () {
                 address:address,
             })
             order.save().then(result=>{
-                req.flash('Success','Order placed successfully ')
-                delete req.session.cart
-                return res.redirect('/customer/orders')
+                Order.populate(result,{path:'customerId'},(err,placedOrder)=>{
+                    req.flash('Success','Order placed successfully ')
+                    delete req.session.cart
+                
+                    // Emit
+                    const eventEmitter = req.app.get('eventEmitter')
+                    eventEmitter.emit('orderPlaced',placedOrder) 
+                    return res.redirect('/customer/orders')
+                })
+               
 
             }).catch(err=>{
                 req.flash('error','Something went wrong')
@@ -32,6 +39,15 @@ function orderController () {
             res.header('Cache-Controler', 'no-cache ,private , no-store , must-revalidate, max-stale=0, post-check=0 , pre-check=0')
             res.render('customers/orders',{orders:orders,moment:moment})
             
+        },
+        async show(req,res){
+            const order = await Order.findById(req.params.id)
+            // Authorize user
+            if(req.user._id.toString() === order.customerId.toString()){
+               return res.render('customers/singleOrder', {order:order})
+            } else{
+               return res.redirect('/');
+            }
         }
     }
 }

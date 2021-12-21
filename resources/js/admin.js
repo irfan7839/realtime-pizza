@@ -3,7 +3,7 @@ import moment from "moment";
 import { Notyf } from "notyf";
 
 
-export function initAdmin(){
+export function initAdmin(socket){
     const orderTableBody=document.querySelector('#orderTableBody')
     let orders = []
 
@@ -24,7 +24,7 @@ export function initAdmin(){
 
     function renderItems(items){
         let parsedItems= Object.values(items)
-        console.log('PARS', parsedItems)
+       // console.log('PARS', parsedItems)
         return parsedItems.map((menuItem)=>{
             return `
             <p> ${menuItem.item.name}-${menuItem.qty} pcs </p>    
@@ -36,7 +36,9 @@ export function initAdmin(){
 
     function generateMarkup(orders){
         //logic
+       // console.log(orders)
         return orders.map(order=>{
+          //  console.log(order)
             return `
             <tr>
             <td class="border px-4 py-2 text-green-900">
@@ -86,4 +88,21 @@ export function initAdmin(){
         `
         }).join('')
     }
+
+    socket.on('orderPlaced',(order)=>{
+        var notyf = new Notyf();
+        notyf.success({
+            message:'new order',
+            duration: 1000,
+            progressBar:false,
+            position: {
+              x: 'right',
+              y: 'top',
+            },
+        })
+        orders.unshift(order)
+        orderTableBody.innerHTML=''
+        orderTableBody.innerHTML=generateMarkup(orders)
+
+    })
 }
