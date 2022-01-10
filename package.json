@@ -4,7 +4,8 @@
   "description": "This is our realtime pizza app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server",
+    "start": "node server",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install  --prefix public && npm run build --prefix public",
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "npm run development -- --watch",

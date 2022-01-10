@@ -74,6 +74,11 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
+// Heroku
+if(process.env.NODE_ENV ==='production'){
+    app.use(express.static("public"));
+}
+
 require('./routes/web')(app)
 app.use((req,res)=>{
     res.status(404).send('<h1>404, Page not found</h1>')
